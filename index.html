@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Druglord</title>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let drugs = ["Cocaine", "Heroin", "Acid", "Weed", "Speed", "Ludes"];
+        let prices = [15000, 10000, 3000, 900, 800, 200];
+        let maxDebt = 50000;
+        let turns = 30;
+        let cash = 2000;
+        let debt = 5500;
+        let bank = 0;
+        let day = 1;
+        let inventory = Array(drugs.length).fill(0);
+
+  function randomPrice(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  function updateDisplay() {
+    document.getElementById("cash").innerText = cash;
+    document.getElementById("debt").innerText = debt;
+    document.getElementById("bank").innerText = bank;
+    document.getElementById("day").innerText = day;
+    for (let i = 0; i < drugs.length; i++) {
+      document.getElementById("drug" + i).innerText = drugs[i] + " $" + prices[i];
+      document.getElementById("inventory" + i).innerText = inventory[i];
+    }
+  }
+
+  function buyDrug(index) {
+    let quantity = parseInt(prompt("How many units of " + drugs[index] + " do you want to buy?"));
+    if (isNaN(quantity) || quantity <= 0) return;
+    let cost = quantity * prices[index];
+    if (cost > cash) {
+      alert("You don't have enough cash.");
+    } else {
+      cash -= cost;
+      inventory[index] += quantity;
+      updateDisplay();
+    }
+  }
+
+  function sellDrug(index) {
+    let quantity = parseInt(prompt("How many units of " + drugs[index] + " do you want to sell?"));
+    if (isNaN(quantity) || quantity <= 0) return;
+    if (quantity > inventory[index]) {
+      alert("You don't have enough of that drug to sell.");
+    } else {
+      cash += quantity * prices[index];
+      inventory[index] -= quantity;
+      updateDisplay();
+    }
+  }
+
+  function deposit() {
+    let amount = parseInt(prompt("How much do you want to deposit?"));
+    if (isNaN(amount) || amount <= 0) return;
+    if (amount > cash) {
+      alert("You don't have enough cash.");
+    } else {
+      cash -= amount;
+      bank += amount;
+      updateDisplay();
+    }
+  }
+
+  function withdraw() {
+    let amount = parseInt(prompt("How much do you want to withdraw?"));
+    if (isNaN(amount) || amount <= 0) return;
+    if (amount > bank) {
+      alert("You don't have enough in the bank.");
+    } else {
+      cash += amount;
+      bank -= amount;
+      updateDisplay();
+    }
+  }
+
+  function payDebt() {
+    let amount = parseInt(prompt("How much do you want to pay?"));
+    if (isNaN(amount) || amount <= 0) return;
+    if (amount > cash) {
+      alert("You don't have enough cash.");
+    } else if (amount > debt) {
+      alert("You don't owe that much.");
+    } else {
+      cash -= amount;
+      debt -= amount;
+      updateDisplay();
+    }
+  }
+
+  function nextDay() {
+    if (day >= turns) {
+        alert("Game over! Your final score: $" + cash);
+        location.reload();
+        return;
+    }
+
+    day++;
+
+    for (let i = 0; i < drugs.length; i++) {
+      prices[i] = randomPrice(Math.floor(prices[i] * 0.5), Math.floor(prices[i] * 1.5));
+    }
+    debt *= 1.1;
+    if (debt > maxDebt) {
+      alert("Your debt is too high. Game over!");
+      location.reload();
+      return;
+    }
+    updateDisplay();
+  }
+
+  updateDisplay();
+  document.getElementById("deposit").onclick = deposit;
+  document.getElementById("withdraw").onclick = withdraw;
+  document.getElementById("payDebt").onclick = payDebt;
+  document.getElementById("nextDay").onclick = nextDay;
+
+  for (let i = 0; i < drugs.length; i++) {
+    document.getElementById("buy" + i).onclick = () => buyDrug(i);
+    document.getElementById("sell" + i).onclick = () => sellDrug(i);
+  }
+});
+
+  </script>
+  <style>
+    body {font-family: sans-serif;}
+    table {border-collapse: collapse; margin-bottom: 1em;}
+    th, td {border: 1px solid #ccc; padding: 5px;}
+  </style>
+</head>
+<body>
+  <h1>Druglord</h1>
+  <p>Day: <span id="day"></span></p>
+  <p>Cash: $<span id="cash"></span></p>
+  <p>Debt: $<span id="debt"></span></p>
+  <p>Bank: $<span id="bank"></span></p>
+  <table>
+    <thead>
+      <tr><th>Drug</th><th>Price</th><th>Buy</th><th>Sell</th><th>Inventory</th></tr>
+    </thead>
+    <tbody>
+      <tr id="drug-row">
+        <td id="drug0"></td>
+        <td id="inventory0"></td>
+        <td><button id="buy0">Buy</button></td>
+        <td><button id="sell0">Sell</button></td>
+      </tr>
+      <tr>
+        <td id="drug1"></td>
+        <td id="inventory1"></td>
+        <td><button id="buy1">Buy</button></td>
+        <td><button id="sell1">Sell</button></td>
+      </tr>
+      <tr>
+        <td id="drug2"></td>
+        <td id="inventory2"></td>
+        <td><button id="buy2">Buy</button></td>
+        <td><button id="sell2">Sell</button></td>
+      </tr>
+      <tr>
+        <td id="drug3"></td>
+        <td id="inventory3"></td>
+        <td><button id="buy3">Buy</button></td>
+        <td><button id="sell3">Sell</button></td>
+      </tr>
+      <tr>
+        <td id="drug4"></td>
+        <td id="inventory4"></td>
+        <td><button id="buy4">Buy</button></td>
+        <td><button id="sell4">Sell</button></td>
+      </tr>
+      <tr>
+        <td id="drug5"></td>
+        <td id="inventory5"></td>
+        <td><button id="buy5">Buy</button></td>
+        <td><button id="sell5">Sell</button></td>
+</tr>
+</tbody>
+  </table>
+  <button id="deposit">Deposit</button>
+  <button id="withdraw">Withdraw</button>
+  <button id="payDebt">Pay Debt</button>
+  <button id="nextDay">Next Day</button>
+</body>
+</html>
