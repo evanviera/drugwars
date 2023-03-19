@@ -1,122 +1,97 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Add your JavaScript here
-    let drugs = ["Cocaine", "Heroin", "Acid", "Weed", "Speed", "Ludes"];
-    let prices = [15000, 10000, 3000, 900, 800, 200];
-    let maxDebt = 50000;
-    let turns = 30;
-    let cash = 2000;
-    let debt = 5500;
-    let bank = 0;
-    let day = 1;
-    let inventory = Array(drugs.length).fill(0);
-
-function randomPrice(min, max) {
-return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function updateDisplay() {
-document.getElementById("cash").innerText = cash;
-document.getElementById("debt").innerText = debt;
-document.getElementById("bank").innerText = bank;
-document.getElementById("day").innerText = day;
-for (let i = 0; i < drugs.length; i++) {
-  document.getElementById("drug" + i).innerText = drugs[i] + " $" + prices[i];
-  document.getElementById("inventory" + i).innerText = inventory[i];
-}
-}
-
-function buyDrug(index) {
-let quantity = parseInt(prompt("How many units of " + drugs[index] + " do you want to buy?"));
-if (isNaN(quantity) || quantity <= 0) return;
-let cost = quantity * prices[index];
-if (cost > cash) {
-  alert("You don't have enough cash.");
-} else {
-  cash -= cost;
-  inventory[index] += quantity;
-  updateDisplay();
-}
-}
-
-function sellDrug(index) {
-let quantity = parseInt(prompt("How many units of " + drugs[index] + " do you want to sell?"));
-if (isNaN(quantity) || quantity <= 0) return;
-if (quantity > inventory[index]) {
-  alert("You don't have enough of that drug to sell.");
-} else {
-  cash += quantity * prices[index];
-  inventory[index] -= quantity;
-  updateDisplay();
-}
-}
-
-function deposit() {
-let amount = parseInt(prompt("How much do you want to deposit?"));
-if (isNaN(amount) || amount <= 0) return;
-if (amount > cash) {
-  alert("You don't have enough cash.");
-} else {
-  cash -= amount;
-  bank += amount;
-  updateDisplay();
-}
-}
-
-function withdraw() {
-let amount = parseInt(prompt("How much do you want to withdraw?"));
-if (isNaN(amount) || amount <= 0) return;
-if (amount > bank) {
-  alert("You don't have enough in the bank.");
-} else {
-  cash += amount;
-  bank -= amount;
-  updateDisplay();
-}
-}
-
-function payDebt() {
-let amount = parseInt(prompt("How much do you want to pay?"));
-if (isNaN(amount) || amount <= 0) return;
-if (amount > cash) {
-  alert("You don't have enough cash.");
-} else if (amount > debt) {
-  alert("You don't owe that much.");
-} else {
-  cash -= amount;
-  debt -= amount;
-  updateDisplay();
-}
-}
-
-function nextDay() {
-if (day >= turns) {
-    alert("Game over! Your final score: $" + cash);
-    location.reload();
-    return;
-}
-
-day++;
-
-for (let i = 0; i < drugs.length; i++) {
-  prices[i] = randomPrice(Math.floor(prices[i] * 0.5), Math.floor(prices[i] * 1.5));
-}
-debt *= 1.1;
-if (debt > maxDebt) {
-  alert("Your debt is too high. Game over!");
-  location.reload();
-  return;
-}
-updateDisplay();
-}
-
-updateDisplay();
-document.getElementById("deposit").onclick = deposit;
-document.getElementById("withdraw").onclick = withdraw;
-document.getElementById("payDebt").onclick = payDebt;
-document.getElementById("nextDay").onclick = nextDay;
-
-for (let i = 0; i < drugs.length; i++) {
-document.getElementById("buy" + i).onclick = () => buyDrug(i);
-document.getElementById("sell" + i).onclick = () => sellDrug(i);
-}
-});  
+class Drug {
+    constructor(name, basePrice) {
+      this.name = name;
+      this.basePrice = basePrice;
+      this.price = basePrice;
+    }
+  }
+  
+  const drugs = [
+    new Drug("Weed", 300),
+    new Drug("Cocaine", 1000),
+    new Drug("Heroin", 2000),
+    new Drug("Meth", 2500),
+    new Drug("LSD", 1500),
+    new Drug("Shrooms", 600),
+  ];
+  
+  let day = 1;
+  let cash = 2000;
+  let debt = 5500.0;
+  let bank = 0;
+  let inventory = [0, 0, 0, 0, 0, 0];
+  
+  function updateUI() {
+    document.getElementById("day").textContent = day;
+    document.getElementById("cash").textContent = Math.round(cash);
+    document.getElementById("debt").textContent = Math.round(debt);
+    document.getElementById("bank").textContent = Math.round(bank);
+  
+    drugs.forEach((drug, index) => {
+      document.getElementById(`drug${index}`).textContent = drug.name;
+      document.getElementById(`price${index}`).textContent = Math.round(drug.price);
+      document.getElementById(`inventory${index}`).textContent = inventory[index];
+    });
+  }
+  
+  function buyDrug(index) {
+    const drug = drugs[index];
+    if (cash >= drug.price) {
+      cash -= drug.price;
+      inventory[index]++;
+      updateUI();
+    }
+  }
+  
+  function sellDrug(index) {
+    if (inventory[index] > 0) {
+      cash += drugs[index].price;
+      inventory[index]--;
+      updateUI();
+    }
+  }
+  
+  function deposit() {
+    if (cash > 0) {
+      bank += cash;
+      cash = 0;
+      updateUI();
+    }
+  }
+  
+  function withdraw() {
+    if (bank > 0) {
+      cash += bank;
+      bank = 0;
+      updateUI();
+    }
+  }
+  
+  function payDebt() {
+    const payment = Math.min(cash, debt);
+    cash -= payment;
+    debt -= payment;
+    updateUI();
+  }
+  
+  function nextDay() {
+    day++;
+    debt *= 1.1; // Increase debt by 10% daily
+    drugs.forEach(drug => {
+      drug.price = drug.basePrice * (0.5 + Math.random());
+    });
+    updateUI();
+  }
+  
+  drugs.forEach((drug, index) => {
+    document.getElementById(`buy${index}`).addEventListener("click", () => buyDrug(index));
+    document.getElementById(`sell${index}`).addEventListener("click", () => sellDrug(index));
+  });
+  
+  document.getElementById("deposit").addEventListener("click", deposit);
+  document.getElementById("withdraw").addEventListener("click", withdraw);
+  document.getElementById("payDebt").addEventListener("click", payDebt);
+  document.getElementById("nextDay").addEventListener("click", nextDay);
+  
+  updateUI();
+  

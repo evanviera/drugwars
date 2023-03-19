@@ -1,57 +1,72 @@
 body {
-  font-family: 'Courier New', monospace;
-  background-color: #000;
-  color: #0f0;
-  font-size: 14px;
-  line-height: 1.5;
+  background-color: black;
+  color: lime;
+  font-family: "Courier New", monospace;
   margin: 0;
-  padding: 20px;
-}
-h1.title {
-  text-align: center;
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: #f00;
-}
-p {
-  margin: 0 0 1em;
-}
-table {
-  border-collapse: collapse;
-  margin: 0 auto 1em;
-  width: 60%;
-}
-th, td {
-  border: 1px solid #0f0;
-  padding: 5px;
-  text-align: center;
-}
-th {
-  color: #f00;
-}
-button {
-  background-color: #000;
-  border: 1px solid #0f0;
-  color: #0f0;
-  cursor: pointer;
-  font-size: 1em;
-  margin: 0 5px;
-  padding: 5px;
-}
-button:hover {
-  background-color: #0f0;
-  color: #000;
-}
-pre {
-  font-family: 'Courier New', monospace;
-  text-align: center;
-  margin-bottom: 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Add specific colors for each drug column */
-#drug0 { color: #f00; }
-#drug1 { color: #0ff; }
-#drug2 { color: #f0f; }
-#drug3 { color: #ff0; }
-#drug4 { color: #f80; }
-#drug5 { color: #0f0; }
+h1.title {
+  margin-top: 0;
+}
+
+#info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+th, td {
+  border: 1px solid lime;
+  padding: 0.5em;
+  text-align: center;
+}
+
+th {
+  background-color: green;
+}
+
+tr:nth-child(even) {
+  background-color: #111111;
+}
+
+.drug-name {
+  color: yellow;
+}
+
+.drug-price {
+  color: cyan;
+}
+
+button {
+  background-color: black;
+  border: 1px solid lime;
+  color: lime;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  margin: 0.5em;
+  padding: 0.25em 0.5em;
+}
+
+button:hover {
+  background-color: lime;
+  color: black;
+}
+
+#button-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 60%;
+}

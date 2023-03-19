@@ -16,56 +16,66 @@
            |__/__/|_|
   </pre>
   <h1 class="title">Drugwars</h1>
-  <p>Day: <span id="day"></span></p>
-  <p>Cash: $<span id="cash"></span></p>
-  <p>Debt: $<span id="debt"></span></p>
-  <p>Bank: $<span id="bank"></span></p>
+  <div id="info-container">
+    <p>Day: <span id="day"></span></p>
+    <p>Cash: $<span id="cash"></span></p>
+    <p>Debt: $<span id="debt"></span></p>
+    <p>Bank: $<span id="bank"></span></p>
+  </div>
   <table>
     <thead>
       <tr><th>Drug</th><th>Price</th><th>Buy</th><th>Sell</th><th>Inventory</th></tr>
     </thead>
     <tbody>
       <tr id="drug-row">
-        <td id="drug0"></td>
+        <td class="drug-name" id="drug0"></td>
+        <td class="drug-price" id="price0"></td>
         <td id="inventory0"></td>
         <td><button id="buy0">Buy</button></td>
         <td><button id="sell0">Sell</button></td>
       </tr>
       <tr>
-        <td id="drug1"></td>
+        <td class="drug-name" id="drug1"></td>
+        <td class="drug-price" id="price1"></td>
         <td id="inventory1"></td>
         <td><button id="buy1">Buy</button></td>
         <td><button id="sell1">Sell</button></td>
       </tr>
       <tr>
-        <td id="drug2"></td>
+        <td class="drug-name" id="drug2"></td>
+        <td class="drug-price" id="price2"></td>
         <td id="inventory2"></td>
         <td><button id="buy2">Buy</button></td>
         <td><button id="sell2">Sell</button></td>
       </tr>
       <tr>
-        <td id="drug3"></td>
+        <td class="drug-name" id="drug3"></td>
+        <td class="drug-price" id="price3"></td>
         <td id="inventory3"></td>
         <td><button id="buy3">Buy</button></td>
         <td><button id="sell3">Sell</button></td>
       </tr>
       <tr>
-        <td id="drug4"></td>
+        <td class="drug-name" id="drug4"></td>
+        <td class="drug-price" id="price4"></td>
         <td id="inventory4"></td>
         <td><button id="buy4">Buy</button></td>
         <td><button id="sell4">Sell</button></td>
       </tr>
       <tr>
-        <td id="drug5"></td>
+        <td class="drug-name" id="drug5"></td>
+        <td class="drug-price" id="price5"></td>
         <td id="inventory5"></td>
         <td><button id="buy5">Buy</button></td>
         <td><button id="sell5">Sell</button></td>
-</tr>
-</tbody>
+      </tr>
+    </tbody>
   </table>
-  <button id="deposit">Deposit</button>
-  <button id="withdraw">Withdraw</button>
-  <button id="payDebt">Pay Debt</button>
-  <button id="nextDay">Next Day</button>
+  <div id="button-container">
+    <button id="deposit">Deposit</button>
+    <button id="withdraw">Withdraw</button>
+    <button id="payDebt">Pay Debt</button>
+    <button id="nextDay">Next Day</button>
+  </div>
 </body>
 </html>
