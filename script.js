@@ -76,7 +76,7 @@ class Drug {
   
   function nextDay() {
     day++;
-    debt *= 1.1; // Increase debt by 10% daily
+    debt *= 1.01; // Increase debt by 10% daily
     drugs.forEach(drug => {
       drug.price = drug.basePrice * (0.5 + Math.random());
     });
