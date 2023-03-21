@@ -77,8 +77,12 @@ class Drug {
   function nextDay() {
     day++;
     debt *= 1.01; // Increase debt by 10% daily
-    drugs.forEach(drug => {
-      drug.price = drug.basePrice * (0.5 + Math.random());
+    drugs.forEach(item => {
+      const u1 = Math.random();
+      const u2 = Math.random();
+      const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      const smallChange = item.basePrice * (0.05 + 0.1 * z1); // bias toward small changes
+      item.price = item.basePrice + smallChange;
     });
     updateUI();
   }
