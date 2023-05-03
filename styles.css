@@ -70,3 +70,29 @@ button:hover {
   justify-content: flex-start;
   width: 60%;
 }
+
+/* Add to your existing CSS */
+
+#location-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#location-container button {
+  margin-top: 0.5em;
+}
+
+#message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: red; /* Change color to make messages stand out */
+}
+
