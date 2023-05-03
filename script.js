@@ -82,13 +82,19 @@ function payDebt() {
 }
 
 function nextDay() {
+  // Reset message
+  document.getElementById("message").textContent = '';
+
   day++;
-  debt += debt * 0.1;
+  debt *= 1.05;
+
   drugs.forEach(drug => {
-    drug.price = drug.basePrice * (0.5 + Math.random());
+    drug.price = drug.basePrice * (1 + Math.random() - 0.5);
   });
+
   randomEvent();
   policeEncounter();
+
   updateUI();
 }
 
@@ -100,22 +106,23 @@ function randomEvent() {
       case 0: // Drug bust
         const bustDrugIndex = Math.floor(Math.random() * drugs.length);
         inventory[bustDrugIndex] = 0;
+        document.getElementById("message").textContent = `The police have seized all of your ${drugs[bustDrugIndex].name}!`;
         break;
       case 1: // Find drugs
         const findDrugIndex = Math.floor(Math.random() * drugs.length);
-        inventory[findDrugIndex] += Math.floor(Math.random() * 10) + 1;
+        const amountFound = Math.floor(Math.random() * 10) + 1;
+        inventory[findDrugIndex] += amountFound;
+        document.getElementById("message").textContent = `You found ${amountFound} units of ${drugs[findDrugIndex].name}!`;
         break;
       case 2: // Price surge or crash
         const priceChangeDrugIndex = Math.floor(Math.random() * drugs.length);
-        drugs[priceChangeDrugIndex].price *= (Math.random() < 0.5) ? 0.5 : 2;
+        const priceMultiplier = (Math.random() < 0.5) ? 0.5 : 2;
+        drugs[priceChangeDrugIndex].price *= priceMultiplier;
+        document.getElementById("message").textContent = `The price of ${drugs[priceChangeDrugIndex].name} has ${(priceMultiplier === 0.5) ? 'crashed!' : 'surged!'}`;
         break;
     }
+    updateUI();
   }
-}
-
-function travelTo(index) {
-  currentLocation = index;
-  updateUI();
 }
 
 function policeEncounter() {
@@ -125,14 +132,22 @@ function policeEncounter() {
     switch(encounterType) {
       case 0: // Drugs confiscated
         inventory = inventory.map(() => 0);
+        document.getElementById("message").textContent = "The police have confiscated all of your drugs!";
         break;
       case 1: // Pay fine
         const fine = Math.min(cash, 1000);
         cash -= fine;
+        document.getElementById("message").textContent = `The police have fined you $${fine}!`;
         break;
     }
     updateUI();
   }
+}
+
+
+function travelTo(index) {
+  currentLocation = index;
+  updateUI();
 }
 
 drugs.forEach((drug, index) => {
